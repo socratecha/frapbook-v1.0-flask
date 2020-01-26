@@ -92,6 +92,9 @@ def clean_data():
                 session.delete(assignment)
             session.commit()
             print('Extraneous assignments deleted')
+def drop_tables():
+    for Table in [Employee, Project, Assignment]:
+        session.query(Table).delete()
 if __name__ == '__main__':
     add_sample_data()
     clean_data()
