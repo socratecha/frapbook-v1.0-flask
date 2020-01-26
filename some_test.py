@@ -46,3 +46,29 @@ def test_myapi_get(test_app):
     assert isinstance(data, list)
     for datum in data:
         assert isinstance(datum, dict) and set(datum.keys()) == {'id', 'number', 'description'}
+
+def test_myapi_id_get(test_app):
+    '''Using ``test_app`` fixture, check response on a GET request
+    '''
+    response = test_app.get('/my-api/2')
+    assert response.status_code == 200
+
+    data = json.loads(response.data.decode())
+    assert isinstance(data, dict)
+    assert isinstance(data['number'], int)
+
+def test_myapi_post(test_app):
+    '''Using ``test_app`` fixture, check response on a POST request
+    '''    
+    response = test_app.post(
+        '/my-api',
+        data=json.dumps({
+            "number":1729,
+            "description":"First taxi-cab number"}),
+        headers = {'Content-Type': 'application/json',
+                   'Accept': 'application/json'}
+    )
+    assert response.status_code == 200
+
+    data = json.loads(response.data.decode())
+    assert isinstance(data, int)
