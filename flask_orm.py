@@ -2,6 +2,7 @@ import sqlalchemy
 from sqlalchemy import create_engine, Column, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import CheckConstraint
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
@@ -20,7 +21,9 @@ class Book(base):
 class BirthYear(base):
     __tablename__ = 'birth_years'
     author = Column(types.String(length=50), primary_key=True)
-    birth_year = Column(types.Integer, nullable=False)
+    birth_year = Column(types.Integer,
+                        CheckConstraint('birth_year < 2020'),
+                        nullable=False)
     books = relationship("Book", back_populates="birth_year")
 
 Session = sessionmaker(db)
@@ -46,8 +49,10 @@ session.commit()
 newbook = Book(author="Annie Dillard", title="Teaching a Stone to Talk", available=True)
 session.add(newbook)
 session.commit()
-print('Before access:', newbook.__dict__)
-print('Access author:', newbook.author)
-print('Betwen accesses:', newbook.__dict__)
-print('Access birth_year:', newbook.birth_year.__dict__)
-print('After access:', newbook.__dict__)
+newyear = BirthYear(author="Perfect Vision", birth_year=2020)
+session.add(newyear)
+try:
+    session.commit()
+except sqlalchemy.exc.IntegrityError as e:
+    print("Integrity violation blocked!")
+    session.rollback()
