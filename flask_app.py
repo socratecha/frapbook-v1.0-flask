@@ -38,4 +38,6 @@ class OneNumber(Resource):
     def get(self, id):
         '''Get a single favorite number selected by its id'''
         matches = [ number for number in numbers if number['id'] == id ]
+        if len(matches) == 0:
+            api.abort(404, "Unique id {} not found".format(id))
         return matches[0]
