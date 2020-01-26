@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restplus import Resource, Api
+from flask_restplus import fields
 
 app = Flask(__name__)
 api = Api(app)
@@ -11,6 +12,10 @@ numbers = [
 ]
 top_number = 3
 
+number_model = api.model('Favorite Number', {
+    'number': fields.Integer(description='The favorite number'),    
+    'description': fields.String(description='Description of why it is a favorite')
+})
 
 @api.route('/my-api')
 class Numbers(Resource):
@@ -18,6 +23,7 @@ class Numbers(Resource):
         '''Get the full list of favorite numbers'''
         return numbers
     
+    @api.expect(number_model)
     def post(self):
         '''Post a new favorite number; server assigns the id'''
         global top_number
