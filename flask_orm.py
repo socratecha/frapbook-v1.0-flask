@@ -42,11 +42,6 @@ session.add_all([
     BirthYear(author="Annie Dillard", birth_year=1945),
 ])
 session.commit()
+session.execute('pragma foreign_keys=on')    # keeping SQLite honest
 session.add(Book(author="Seymour M. Hersh", title="Chain of Command", available=False))
 session.commit()
-Q = session.query(BirthYear, Book).filter(
-    Book.title == "Chain of Command", 
-    BirthYear.author == Book.author,
-)
-books = Q.all()
-print('Found {} books'.format(len(books)))
