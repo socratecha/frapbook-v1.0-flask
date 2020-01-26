@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
-connection_string = "sqlite:///database.db"   # for SQLite, local file
+connection_string = "postgresql://localhost:5432/books"   # Postgres books DB
 db   = create_engine(connection_string)
 base = declarative_base()
 
@@ -44,7 +44,6 @@ session.add_all([
 ])
 session.commit()
 newbook = Book(author="Seymour M. Hersh", title="Chain of Command", available=False)
-session.execute('pragma foreign_keys=on')    # keeping SQLite honest
 session.add(newbook)
 try:
     session.commit()
