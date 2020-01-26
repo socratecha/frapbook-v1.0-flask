@@ -1,0 +1,18 @@
+echo "In custom pre-commit" `pwd`
+# Build sphinx docs
+cd docs
+pipenv run make html > make.out
+if [ `grep -c 'no targets are out of date' make.out` -eq 0 ]
+then   # compiled new files, must re-commit
+    echo "Documentation updated; run commit again"
+    exit 1
+fi     # otherwise nothing new, so finish up
+cd ..
+# Test React App
+#cd react-examples
+#CI=true npm test || exit 1
+#cd ..
+# Test Flask API
+#cd flask-examples
+pipenv run pytest -v || exit 1
+#cd ..
