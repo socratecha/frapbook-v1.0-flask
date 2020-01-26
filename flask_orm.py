@@ -1,3 +1,4 @@
+import sqlalchemy
 from sqlalchemy import create_engine, Column, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
@@ -42,6 +43,12 @@ session.add_all([
     BirthYear(author="Annie Dillard", birth_year=1945),
 ])
 session.commit()
+newbook = Book(author="Seymour M. Hersh", title="Chain of Command", available=False)
 session.execute('pragma foreign_keys=on')    # keeping SQLite honest
-session.add(Book(author="Seymour M. Hersh", title="Chain of Command", available=False))
-session.commit()
+session.add(newbook)
+try:
+    session.commit()
+    print('Success!')
+except sqlalchemy.exc.IntegrityError as e:
+    print('Failed with "{}" error message'.format(e.orig))
+    session.rollback()
