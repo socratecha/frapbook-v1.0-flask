@@ -43,11 +43,6 @@ session.add_all([
     BirthYear(author="Annie Dillard", birth_year=1945),
 ])
 session.commit()
-newbook = Book(author="Seymour M. Hersh", title="Chain of Command", available=False)
+newbook = Book(author="Annie Dillard", title="Teaching a Stone to Talk", available=True)
 session.add(newbook)
-try:
-    session.commit()
-    print('Success!')
-except sqlalchemy.exc.IntegrityError as e:
-    print('Failed with "{}" error message'.format(e.orig))
-    session.rollback()
+session.commit()
