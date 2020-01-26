@@ -3,3 +3,4 @@ def test_arithmetic():
 
     x = 17
     assert 3*x == 51, 'Math is broken!'
+    assert True == False, 'Surprise!'
