@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome to Flask Examples’s documentation! &#8212; Flask Examples  documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-flask-examples-s-documentation">
+<h1>Welcome to Flask Examples’s documentation!<a class="headerlink" href="#welcome-to-flask-examples-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="numbers-api">
+<h1>Numbers API<a class="headerlink" href="#numbers-api" title="Permalink to this headline">¶</a></h1>
+<p>The numbers API allows you to track why you like different numbers.</p>
+<span class="target" id="module-flask_app"></span><blockquote class="epigraph">
+<div><p><em>It’s like asking why is Ludwig van Beethoven’s Ninth Symphony 
+beautiful. If you don’t see why, someone can’t tell you. I know 
+numbers are beautiful. If they aren’t beautiful, nothing is.</em>
+– Paul Erdos</p>
+</div></blockquote>
+<p>The Numbers API is for when you <em>really</em> must track your <strong>favorite</strong>
+<strong>numbers</strong>.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This implementation does not persist data across sessions. Also, if
+it is run with multiple server processes, their data will not
+synchronize.</p>
+</div>
+<dl class="class">
+<dt id="flask_app.Numbers">
+<em class="property">class </em><code class="sig-prename descclassname">flask_app.</code><code class="sig-name descname">Numbers</code><span class="sig-paren">(</span><em class="sig-param">api=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#flask_app.Numbers" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="flask_app.Numbers.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#flask_app.Numbers.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the full list of favorite numbers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/my-api</span></code> GET</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A list of favorite numbers, each with:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> a unqiue int identifier</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">number</span></code> the favorite number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> the reason it is a favorite</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="flask_app.Numbers.post">
+<code class="sig-name descname">post</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#flask_app.Numbers.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Post a new favorite number; server assigns the id</p>
+<p>Appends a favorite number with a description into the
+collection, assigning it a new unique identifier in the
+collection. Returns the new identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/my-api</span></code> POST</p>
+</dd>
+<dt class="field-even">Payload</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Submit a JSON object with:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">number</span></code>: the new favorite number (int)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code>: reason it’s a favorite (str)</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Error</dt>
+<dd class="field-odd"><p><strong>400</strong> if missing either <code class="docutils literal notranslate"><span class="pre">number</span></code> or <code class="docutils literal notranslate"><span class="pre">description</span></code> field</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Newly assigned identifier</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="flask_app.OneNumber">
+<em class="property">class </em><code class="sig-prename descclassname">flask_app.</code><code class="sig-name descname">OneNumber</code><span class="sig-paren">(</span><em class="sig-param">api=None</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#flask_app.OneNumber" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="flask_app.OneNumber.get">
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">id</em><span class="sig-paren">)</span><a class="headerlink" href="#flask_app.OneNumber.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a single favorite number selected by its id</p>
+<p>Gets both the number and the description of why its a
+favorite number if the id is valid, otherwise produces an
+error code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Route</dt>
+<dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">/my-api/&lt;int:id&gt;</span></code> GET</p>
+</dd>
+<dt class="field-even">Parameters</dt>
+<dd class="field-even"><p><strong>id</strong> (<em>int</em>) – favorite number identifier</p>
+</dd>
+<dt class="field-odd">Error</dt>
+<dd class="field-odd"><p><strong>404</strong> if <code class="docutils literal notranslate"><span class="pre">id</span></code> is not in the collection</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A single favorite number with:</dt><dd><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">id</span></code> a unqiue int identifier</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">number</span></code> the favorite number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">description</span></code> the reason it is a favorite</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">Flask Examples</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, Erik M. Ferragut.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.3.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
