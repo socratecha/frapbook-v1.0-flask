@@ -1,6 +1,8 @@
 from sqlalchemy import create_engine, Column, types
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship
 
 connection_string = "sqlite:///database.db"   # for SQLite, local file
 db   = create_engine(connection_string)
@@ -9,14 +11,16 @@ base = declarative_base()
 class Book(base):
     __tablename__ = 'books'
     id = Column(types.Integer, primary_key=True)
-    author = Column(types.String(length=50))
+    author = Column(types.String(length=50), ForeignKey('birth_years.author'), nullable=False)
     title = Column(types.String(length=120), nullable=False)
     available = Column(types.Boolean, nullable=False)
+    birth_year = relationship("BirthYear", back_populates="books")
 
 class BirthYear(base):
     __tablename__ = 'birth_years'
     author = Column(types.String(length=50), primary_key=True)
     birth_year = Column(types.Integer, nullable=False)
+    books = relationship("Book", back_populates="birth_year")
 
 Session = sessionmaker(db)
 session = Session()
