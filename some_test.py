@@ -1,4 +1,7 @@
+import json
 import pytest
+
+from flask_app import app
 
 def test_arithmetic():
     '''Placeholder test to see how tests works with pytest.'''
@@ -16,3 +19,30 @@ def test_some_function():
     assert some_function(1) == 2
     with pytest.raises(IndexError) as e:
         x = some_function(10)
+
+@pytest.fixture(scope='module')
+def test_app():
+    '''Uses ``app`` imported from flask_app to create a testable Flask
+    application.
+
+    :yield: Flask application with a context, ready for testing
+    '''
+    # Uses global variable "app"
+    app.config['TESTING'] = True
+    test_app = app.test_client() 
+    ctx = app.app_context()
+    ctx.push()
+    yield test_app 
+    ctx.pop()
+
+def test_myapi_get(test_app):
+    '''Using a ``test_app`` as a fixture, test its response on a GET
+    request
+    '''
+    response = test_app.get('/my-api')
+    assert response.status_code == 200
+
+    data = json.loads(response.data.decode())
+    assert isinstance(data, list)
+    for datum in data:
+        assert isinstance(datum, dict) and set(datum.keys()) == {'id', 'number', 'description'}
