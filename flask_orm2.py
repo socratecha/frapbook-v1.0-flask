@@ -20,6 +20,10 @@ class Employee(base):
     skill = Column(types.String(length=20))
     assignments = relationship("Assignment", back_populates="employee")
 
+    def needless_assignments(self):
+        return [assignment for assignment in self.assignments
+                if self.skill not in assignment.project.needs.split()]
+
 class Project(base):
     __tablename__ = 'projects'
     id = Column(types.Integer, primary_key=True)
@@ -71,9 +75,23 @@ def clean_data():
     for project in session.query(Project).all():
         nonstandards = project.nonstandard_needs()
         if nonstandards:
-            print('Project {} requires non-standard skills: {}'.format(
+            print('Project {} requires non-standard skill: {}'.format(
                 project.name, ', '.join(nonstandards)))
-
+            standards = [need for need in project.needs.split()
+                         if need in standard_skills]
+            project.needs = ' '.join(standards)   # update the object
+            session.commit()                      # update the database
+            print('Nonstandard skills removed')
+    for employee in session.query(Employee).all():
+        extra_projects = employee.needless_assignments()
+        if extra_projects:
+            print('Employee {} should not be on projects: {}'.format(
+                employee.name, ', '.join([assignment.project.name
+                                          for assignment in extra_projects])))
+            for assignment in extra_projects:
+                session.delete(assignment)
+            session.commit()
+            print('Extraneous assignments deleted')
 if __name__ == '__main__':
     add_sample_data()
     clean_data()
