@@ -72,3 +72,4 @@ def test_myapi_post(test_app):
 
     data = json.loads(response.data.decode())
     assert isinstance(data, int)
+#
